@@ -1,0 +1,5 @@
+node_modules
+dist
+
+# Admin keys for the visitor counters (lets anyone reset or delete them). Never commit.
+counter-admin-keys.txt

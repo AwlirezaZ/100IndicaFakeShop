@@ -1,0 +1,147 @@
+@import "tailwindcss";
+
+/* Night mode is toggled by a `dark` class on <html> */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  /* 100Indica logo colours */
+  --color-indica-green: #57ff53;
+  --color-indica-purple: #bf55dd;
+  --color-indica-night: #1f0631;
+  /* Purple scale built around the logo purple (500) */
+  --color-brand-50: #faf0fd;
+  --color-brand-100: #f3dffa;
+  --color-brand-200: #e8c0f5;
+  --color-brand-300: #d896ec;
+  --color-brand-400: #c96ee3;
+  --color-brand-500: #bf55dd;
+  --color-brand-600: #9d33bf;
+  --color-brand-700: #7f2a9b;
+  --color-brand-800: #5f1f74;
+  --color-brand-900: #3b1150;
+
+  /* Semantic colors: these swap automatically in night mode (see .dark below) */
+  --color-page: #f8fafc;     /* page background */
+  --color-surface: #ffffff;  /* cards, panels, inputs */
+  --color-soft: #f1f5f9;     /* subtle fills, hovers, skeletons */
+  --color-well: #f8fafc;     /* behind product photos */
+  --color-line: #e2e8f0;     /* borders, dividers */
+  --color-ink: #0f172a;      /* main text, primary dark buttons */
+  --color-body: #475569;     /* paragraph text */
+  --color-muted: #64748b;    /* secondary text */
+  --color-faint: #94a3b8;    /* hints, placeholders */
+  --color-focus: #f3dffa;    /* focus rings */
+  --color-tint: #faf0fd;     /* brand-tinted highlight background */
+  --color-tint-ink: #7f2a9b; /* text on tint */
+}
+
+.dark {
+  color-scheme: dark;
+  /* Purple-tinted darks, to match the logo */
+  --color-page: #0b0510;
+  --color-surface: #160c1e;
+  --color-soft: #261732;
+  --color-well: #e2e8f0; /* product photos have white backgrounds, so keep their tile light */
+  --color-line: #2a1a36;
+  --color-ink: #f5f0f7;
+  --color-body: #d6cbdc;
+  --color-muted: #a596ad;
+  --color-faint: #75667d;
+  --color-focus: rgb(191 85 221 / 0.35);
+  --color-tint: rgb(191 85 221 / 0.16);
+  --color-tint-ink: #d896ec;
+}
+
+html { scroll-behavior: smooth; }
+body { @apply bg-page text-ink antialiased transition-colors duration-300; }
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; }
+
+/* Payment card flip */
+.card-3d { perspective: 1200px; }
+.card-inner { transform-style: preserve-3d; transition: transform .6s cubic-bezier(.4,.2,.2,1); }
+.card-inner.flipped { transform: rotateY(180deg); }
+.card-face { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.card-back { transform: rotateY(180deg); }
+
+@keyframes fade-in { from { opacity: 0 } to { opacity: 1 } }
+@keyframes slide-in { from { transform: translateX(100%) } to { transform: translateX(0) } }
+@keyframes pop-in { from { opacity: 0; transform: scale(.95) translateY(8px) } to { opacity: 1; transform: none } }
+/* Fun extras */
+@keyframes wiggle { 0%, 100% { transform: rotate(0) } 25% { transform: rotate(-12deg) } 75% { transform: rotate(12deg) } }
+@keyframes zap-spin { from { transform: rotate(0) } to { transform: rotate(360deg) } }
+.zap-spin { animation: zap-spin 1.2s cubic-bezier(.6,.05,.3,1); }
+@keyframes ball-across {
+  0%   { transform: translate(-25vw, 55vh) rotate(0deg) }
+  20%  { transform: translate(10vw, 5vh) rotate(220deg) }
+  40%  { transform: translate(35vw, 60vh) rotate(440deg) }
+  60%  { transform: translate(60vw, 12vh) rotate(660deg) }
+  80%  { transform: translate(82vw, 60vh) rotate(880deg) }
+  100% { transform: translate(115vw, 20vh) rotate(1100deg) }
+}
+.ball-across { animation: ball-across 3s linear both; }
+
+/* Banana (pizza, …) cursor trail */
+@keyframes trail-fade {
+  from { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+  to   { opacity: 0; transform: translate(-50%, 30px) scale(.4) rotate(60deg); }
+}
+.cursor-trail { position: fixed; z-index: 99; pointer-events: none; font-size: 20px; animation: trail-fade .8s ease-out forwards; }
+
+/* Konami-code 8-bit mode */
+html.retro body, html.retro button, html.retro input, html.retro select { font-family: "Courier New", ui-monospace, monospace !important; }
+html.retro *, html.retro *::before, html.retro *::after { border-radius: 0 !important; }
+html.retro main .group, html.retro main .rounded-3xl, html.retro main .rounded-2xl { box-shadow: 6px 6px 0 #000 !important; }
+html.retro.dark main .group, html.retro.dark main .rounded-3xl, html.retro.dark main .rounded-2xl { box-shadow: 6px 6px 0 #84cc16 !important; }
+html.retro img { image-rendering: pixelated; }
+.retro-scanlines { background: repeating-linear-gradient(to bottom, rgb(0 0 0 / 0.12) 0 2px, transparent 2px 4px); }
+
+@keyframes wrapped-progress { from { width: 0% } to { width: 100% } }
+
+/* "No tip" makes the whole site sad for a moment. */
+html { transition: filter 0.8s; }
+html.sad-mode { filter: grayscale(1) brightness(0.85); }
+
+/* Disco mode: a rainbow colour wash over everything, a disco ball, and dancing product cards.
+   The ball is an SVG (same as DiscoBall in Icons.tsx) because Windows has no 🪩 emoji. */
+@keyframes disco-hue { to { filter: hue-rotate(360deg) } }
+@keyframes disco-ball { 0%, 100% { transform: translateX(-50%) rotate(-12deg) } 50% { transform: translateX(-50%) rotate(12deg) } }
+@keyframes disco-dance { from { transform: translateY(0) rotate(-1.5deg) } to { transform: translateY(-6px) rotate(1.5deg) } }
+html.disco body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  pointer-events: none;
+  background: conic-gradient(from 0deg, #f43f5e, #f59e0b, #84cc16, #06b6d4, #6366f1, #d946ef, #f43f5e);
+  mix-blend-mode: color;
+  opacity: 0.35;
+  animation: disco-hue 3s linear infinite;
+}
+html.disco body::before {
+  content: '';
+  width: 3.5rem;
+  height: 3.5rem;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='10' fill='%2394a3b8'/%3E%3Cg fill='%23e2e8f0'%3E%3Crect x='6' y='5' width='3.4' height='3.4' rx='.5'/%3E%3Crect x='10.3' y='3.2' width='3.4' height='3.4' rx='.5'/%3E%3Crect x='14.6' y='5' width='3.4' height='3.4' rx='.5'/%3E%3Crect x='4' y='9.6' width='3.4' height='3.4' rx='.5'/%3E%3Crect x='10.3' y='10.3' width='3.4' height='3.4' rx='.5'/%3E%3Crect x='16.6' y='9.6' width='3.4' height='3.4' rx='.5'/%3E%3Crect x='6' y='15' width='3.4' height='3.4' rx='.5'/%3E%3Crect x='14.6' y='15' width='3.4' height='3.4' rx='.5'/%3E%3C/g%3E%3Cg fill='%23f0abfc'%3E%3Crect x='8.2' y='7.4' width='2.6' height='2.6' rx='.4'/%3E%3Crect x='13.4' y='13.8' width='2.6' height='2.6' rx='.4'/%3E%3C/g%3E%3Cg fill='%2367e8f9'%3E%3Crect x='13.2' y='7.4' width='2.6' height='2.6' rx='.4'/%3E%3Crect x='8.2' y='13.8' width='2.6' height='2.6' rx='.4'/%3E%3C/g%3E%3Ccircle cx='8' cy='7' r='1.6' fill='white'/%3E%3C/svg%3E") center / contain no-repeat;
+  position: fixed;
+  top: -6px;
+  left: 50%;
+  z-index: 96;
+  pointer-events: none;
+  transform-origin: top center;
+  animation: disco-ball 1.6s ease-in-out infinite;
+}
+html.disco main .group { animation: disco-dance .45s ease-in-out infinite alternate; }
+html.disco main .group:nth-child(even) { animation-delay: .22s; }
+
+/* Static charge zap (see StaticCharge in Trolls.tsx) */
+@keyframes zap-shake { 0%, 100% { transform: translate(0) } 20% { transform: translate(-8px, 4px) } 40% { transform: translate(7px, -5px) } 60% { transform: translate(-5px, -3px) } 80% { transform: translate(4px, 5px) } }
+.zap-shake { animation: zap-shake .5s linear; }
+@keyframes zap-flash { 0% { opacity: .9 } 15% { opacity: 0 } 25% { opacity: .6 } 100% { opacity: 0 } }
+.zap-flash { animation: zap-flash .7s ease-out both; }
+
+.animate-fade-in { animation: fade-in .2s ease-out both; }
+.animate-slide-in { animation: slide-in .3s cubic-bezier(.2,.8,.2,1) both; }
+.animate-pop-in { animation: pop-in .25s cubic-bezier(.2,.8,.2,1) both; }
