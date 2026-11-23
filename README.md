@@ -1,5 +1,10 @@
 # 100Indica Shop — demo shop with a pretend checkout
 
+**▶ Live site: https://awlirezaz.github.io/100IndicaFakeShop/**
+
+It's rebuilt and published automatically every time something is pushed to `main`
+(see [.github/workflows/pages.yml](.github/workflows/pages.yml)).
+
 ## How to use it (no install needed)
 
 1. Copy **`100IndicaShop.html`** to the Mac (AirDrop, USB, email — anything).
